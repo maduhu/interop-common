@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-current.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-current.xsd">
+
+    <!-- note that both sfdc and salesforce exist here for legacy reasons -->
+
+    <!-- Level 0: Enable environmental overrides -->
+    <context:property-placeholder location="classpath:MuleEnvironment-override.properties,mq-override.properties,db-override.properties,ftp-override.properties,sfdc-override.properties,salesforce-override.properties,routing-override.properties,file-override.properties,email-override.properties,db-override.properties" order="0" ignore-unresolvable="true" ignore-resource-not-found="true" />
+
+    <!-- Level 1: skipped for now -->
+
+    <!-- Level 2: Environmental configuration files provided by applications -->
+    <context:property-placeholder location="config.properties,config-${MULE_ENV}.properties"
+                                  ignore-resource-not-found="true"
+                                  ignore-unresolvable="true"
+                                  order="2" />
+
+    <!-- Level 3: Service specific properties files (amq, wmq, sftp, ftp, etc). -->
+    <context:property-placeholder location="mq-defaults.properties,mq.properties,mq-${MULE_ENV}.properties,db.properties,db-${MULE_ENV}.properties,ftp.properties,ftp-${MULE_ENV}.properties,sfdc.properties,sfdc-${MULE_ENV}.properties,salesforce.properties,salesforce-${MULE_ENV}.properties,routing.properties,routing-${MULE_ENV}.properties,file-defaults.properties,file.properties,file-${MULE_ENV}.properties,email-defaults.properties,email.properties,email-${MULE_ENV}.properties,db.properties,db-${MULE_ENV}.properties"
+                                  ignore-resource-not-found="true"
+                                  ignore-unresolvable="true"
+                                  order="3" />
+
+    <!-- Level 4: Environmental configuration files defined for all apps here -->
+    <context:property-placeholder location="classpath:MuleEnvironment-defaults.properties,MuleEnvironment.properties,MuleEnvironment-${MULE_ENV}.properties" order="4" ignore-unresolvable="true" ignore-resource-not-found="true"/>
+
+    <!-- define an object store.  is this necessary? -->
+	<bean id="rhObjectStore" class="org.mule.util.store.SimpleMemoryObjectStore"/>
+	
+</beans>
