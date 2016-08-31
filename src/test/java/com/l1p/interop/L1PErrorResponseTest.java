@@ -20,44 +20,58 @@ public class L1PErrorResponseTest {
      * the correct data.
      */
     public void responseShouldBeConvertibleToJSON() throws Exception {
-        String message = "User Add Failed";
-        String technicalMessage = "User Add Failed due to primary key violation";
-        String type = "test.type";
+        String message = "a message";
+        String id = "an id";
 
-        L1PErrorResponse errorResponse = new L1PErrorResponse( message, technicalMessage, type, null );
+        L1PErrorResponse errorResponse = new L1PErrorResponse( id, message, null );
         String errorResponseJson = errorResponse.toString();
 
         //convert output to map
         Map<String,Object> header = JsonTransformer.stringToMap( errorResponseJson );
-        validateErrorResponse( header, message, technicalMessage, type );
+        validateErrorResponse( header, id, message, false );
     }
 
     @Test
     public void errorResponseShouldIncludeExceptionInformation() throws Exception {
-        String message = "short";
-        String technicalMessage = "verbose";
-        String type = "test.type";
-        Exception causeException = new RuntimeException( "test cause exception" );
-        Exception testException = new RuntimeException( "test actual exception", causeException );
+        String message = "a message";
+        String id = "an id";
+        String exceptionMessage = "test exception message";
+        String rootCauseExceptionMessage = "test root cause exception message";
 
-        L1PErrorResponse errorResponse = new L1PErrorResponse( message, technicalMessage, type, testException );
+        Exception causeException = new RuntimeException( rootCauseExceptionMessage );
+        Exception testException = new RuntimeException( exceptionMessage, causeException );
+
+        L1PErrorResponse errorResponse = new L1PErrorResponse( id, message, testException );
         String errorResponseJson = errorResponse.toString();
 
         //convert output to map
         Map<String,Object> header = JsonTransformer.stringToMap( errorResponseJson );
-        validateErrorResponse( header, message, technicalMessage, type );
+        validateErrorResponse( header, id, message, true );
+
+        Map<String,Object> debug = (Map<String,Object>)header.get( L1PErrorResponse.DEBUG_FIELD );
+        assertEquals( "Debug message did not contain expected value", exceptionMessage, debug.get( L1PErrorResponse.MESSAGE_FIELD ) );
+        assertTrue( "Debug object did not contain expected field " + L1PErrorResponse.CAUSE_FIELD, debug.containsKey( L1PErrorResponse.CAUSE_FIELD ) );
+        Map<String,Object> cause = (Map<String,Object>)debug.get( L1PErrorResponse.CAUSE_FIELD );
+        assertTrue( "Debug object contained a null value for field " + L1PErrorResponse.CAUSE_FIELD, cause != null );
+        assertEquals( "Cause message did not contain expected value", rootCauseExceptionMessage, cause.get( L1PErrorResponse.MESSAGE_FIELD ) );
+
     }
 
-    public void validateErrorResponse( Map<String,Object> errorResponseHeader, String expectedMessage, String expectedTechnicalMessage, String expectedType ) throws Exception {
+    public void validateErrorResponse( Map<String,Object> errorResponseHeader, String expectedId, String expectedMessage, boolean shouldContainDebugInfo ) throws Exception {
         assertTrue( "Header map was null", errorResponseHeader != null );
 
         Map<String,Object> error = (Map<String,Object>)errorResponseHeader.get( "error" );
         assertTrue( "Error map was null", error != null );
-        assertTrue( "Size of Error map was incorrect, expected 3, received " + error.size(), error.size() == 3 );
-        assertEquals( "Header map did not contain correct data for message element", expectedMessage, error.get( "message" ) );
-        assertEquals( "Header map did not contain correct data for type element", expectedType, error.get( "type" ) );
-        assertEquals( "Header map did not contain correct data for errorPrint element", expectedTechnicalMessage, error.get( "errorPrint" ) );
+        assertEquals( "Header map did not contain correct data for " + L1PErrorResponse.MESSAGE_FIELD + " element", expectedMessage, error.get( L1PErrorResponse.MESSAGE_FIELD ) );
+        assertEquals( "Header map did not contain correct data for " + L1PErrorResponse.ID_FIELD + " element", expectedId, error.get( L1PErrorResponse.ID_FIELD ) );
 
+        Map<String, Object> debug = (Map<String, Object>)errorResponseHeader.get( L1PErrorResponse.DEBUG_FIELD );
+        if ( shouldContainDebugInfo ) {
+            assertTrue( "Response contained null debug information", debug != null );
+            assertTrue( "Response contained empty debug information", debug.size() > 0 );
+        } else {
+            assertTrue( "Response incorrectly contained debug information", debug == null );
+        }
     }
 
 }

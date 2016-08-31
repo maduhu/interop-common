@@ -11,6 +11,15 @@ import java.util.Map;
  * Created by Bryan on 8/17/2016.
  */
 public class L1PErrorResponse {
+
+    public static final String ERROR_FIELD = "error";
+    public static final String ID_FIELD = "id";
+    public static final String MESSAGE_FIELD = "message";
+    public static final String DEBUG_FIELD = "debug";
+    public static final String CAUSE_FIELD = "cause";
+    public static final String STACK_INFO_FIELD = "stackInfo";
+    public static final String IS_ROOT_FIELD = "isRootCause";
+
     private final int MAX_STACK_LENGTH = 10;
     private final int MAX_RECURSION_DEPTH = 3;
 
@@ -18,26 +27,25 @@ public class L1PErrorResponse {
     private final Map<String,Object> responseData;
 
     /**
-     * Constructs an instance of L1PErrorResponse
+     * Constructs an instance of L1PErrorResponse.  If throwable is not null and includeDebugInfo is true
+     * then a debug section will be included in the response as well.
      *
-     * @param message - technical error message suitable to be logged in application logs. This message is supposed to aid for audit / debug purposes and is visible to system admins
-     * @param technicalMessage - user friendly message translated to the user's language and suitable for displaying to the user that invoked the action
-     * @param type - application defined error type, usually part of well defined list of error types
-     * @param throwable - Optional instance of Throwable that will be included as debug information
+     * @param id - Application defined error type, usually part of well defined list of error types
+     * @param message - Error message suitable to be logged in application logs.
+     * @param throwable - Instance of Throwable that will be included as debug information.
      */
-    public L1PErrorResponse( final String message, final String technicalMessage, final String type, Throwable throwable ) {
+    public L1PErrorResponse( final String id, final String message, Throwable throwable ) {
         final Map<String, Object> errorMap = new HashMap<String, Object>();
 
-        updateField( "message", message, errorMap );
-        updateField( "errorPrint", technicalMessage, errorMap );
-        updateField( "type", type, errorMap );
+        updateField( MESSAGE_FIELD, message, errorMap );
+        updateField( ID_FIELD, id, errorMap );
 
         responseData = new HashMap<String, Object>();
 
-        responseData.put( "error", errorMap );
+        responseData.put( ERROR_FIELD, errorMap );
 
         if ( throwable != null )
-            responseData.put( "debug", parseCause( throwable, 1 ) );
+            responseData.put( DEBUG_FIELD, parseCause( throwable, 1 ) );
 
         jsonString = JsonTransformer.mapToString( responseData );
     }
@@ -48,19 +56,22 @@ public class L1PErrorResponse {
      * stack overflow.
      *
      * @param throwable - the top level Throwable
+     * @param level - current recursion depth
      * @return Map representing the exception hierarchy
      */
     private Map<String,Object> parseCause( final Throwable throwable, final int level ) {
         Map<String, Object> result = new HashMap<String,Object>();
 
         List<String> stackMessages = parseStackTrace( throwable.getStackTrace() );
-        result.put("exceptionMessage", throwable.getMessage() );
-        result.put("stackInfo", stackMessages);
+        result.put( MESSAGE_FIELD, throwable.getMessage() );
+        result.put( STACK_INFO_FIELD, stackMessages);
 
         Throwable nextCause = throwable.getCause();
 
-        if ( nextCause != null && nextCause != throwable && level < MAX_RECURSION_DEPTH ) {
-            result.put( "cause", parseCause( nextCause, ( level + 1 ) ) );
+        if ( nextCause == null || nextCause == throwable ) {
+            result.put(IS_ROOT_FIELD, nextCause == null);
+        } else if ( level < MAX_RECURSION_DEPTH ) {
+            result.put( CAUSE_FIELD, parseCause( nextCause, ( level + 1 ) ) );
         }
 
         return result;
@@ -81,14 +92,18 @@ public class L1PErrorResponse {
         if ( stackTrace != null && stackTrace.length > 0 ) {
             int stackSize = stackTrace.length;
             int linesToPrint = stackSize <= MAX_STACK_LENGTH ? stackSize : MAX_STACK_LENGTH;
+            int skippedLines = stackSize - linesToPrint;
 
             for ( int i = 0; i < linesToPrint; i++ ) {
                 StackTraceElement nextElement = stackTrace[i];
                 result.add( nextElement.toString() );
             }
 
-            if ( linesToPrint < stackSize ) {
-                result.add( "... " + ( stackSize - linesToPrint - 1 ) + " stack entries skipped, final entry below ...");
+            if ( skippedLines > 0 ) {
+                if ( skippedLines > 1 ) {
+                    result.add("... " + (skippedLines - 1) + " stack entries skipped, final entry below ...");
+                }
+
                 result.add( stackTrace[ stackSize - 1 ].toString() );   //add final entry
             }
         }
