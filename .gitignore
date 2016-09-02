@@ -58,3 +58,5 @@ logs/
 # --------------- #
 .idea/
 **/*.iml
+src/main/app/mule-app.properties
+src/main/app/mule-deploy.properties
