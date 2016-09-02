@@ -5,14 +5,14 @@ This is a common project for all interop projects such as interop-dfsp-gateway a
 
 Referenced in the projects as:
 
-<properties>
+"<properties>
     <interop-common-version>1.0.4</interop-common-version>
-</properties>
+</properties>"
 
-<dependencies>
+"<dependencies>
     <dependency>
         <groupId>com.l1p.interop</groupId>
             <artifactId>interop-common</artifactId>
             <version>${interop-common-version}</version>
     </dependency>
-</dependencies>
+</dependencies>"
