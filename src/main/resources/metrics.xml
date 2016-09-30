@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:spring="http://www.springframework.org/schema/beans"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:metrics="http://www.mulesoft.org/schema/mule/metrics"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.1.xsd
+http://www.mulesoft.org/schema/mule/metrics http://www.mulesoft.org/schema/mule/metrics/current/mule-metrics.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+	<!-- metrics config -->
+    	<spring:beans>
+		<spring:bean id="metricRegistry" scope="singleton" class="com.codahale.metrics.MetricRegistry"/>
+		<spring:bean id="consoleReporter" class="com.l1p.interop.mule.connector.metrics.spring.ReporterFactory" factory-method="createConsoleReporter">
+			<spring:constructor-arg ref="metricRegistry"/>
+		</spring:bean>
+		<spring:bean id="slf4jReporterWithDeltas" class="com.l1p.interop.mule.connector.metrics.spring.ReporterFactory" factory-method="createSlf4jReporterWithDeltas">
+			<spring:constructor-arg ref="metricRegistry"/>
+		</spring:bean>
+		<spring:bean id="kafkaProducer" class="com.l1p.interop.mule.connector.metrics.reporter.MetricKafkaProducer" >
+			<spring:constructor-arg value="${metrics.reporter.kafka.broker}"/> <!-- servers -->
+			<spring:constructor-arg value="${metrics.reporter.kafka.clientID}"/> <!-- client id -->
+		</spring:bean>
+		<spring:bean id="kafkaReporter" class="com.l1p.interop.mule.connector.metrics.spring.ReporterFactory" factory-method="createKafkaReporter">
+			<spring:constructor-arg ref="metricRegistry"/>
+			<spring:constructor-arg value="${metrics.reporter.kafka.topic}"/><!-- kafkaTopic -->
+			<spring:constructor-arg ref="kafkaProducer"/><!-- kafka producer -->
+			<spring:constructor-arg value="${metrics.reporter.environment}"/><!-- env -->
+			<spring:constructor-arg value="${metrics.reporter.application}"/><!-- app -->
+		</spring:bean>
+		<!--<spring:bean id="csvReporterWithDeltas" class="com.l1p.interop.mule.connector.metrics.spring.ReporterFactory" factory-method="createCsvReporterWithDeltas">-->
+		<!--<spring:constructor-arg ref="metricRegistry"/>-->
+		<!--<spring:constructor-arg value="${metrics.reporter.csv.directory}"/>&lt;!&ndash; directory for csv files &ndash;&gt;-->
+		<!--<spring:constructor-arg value="${metrics.reporter.environment}"/>&lt;!&ndash; env &ndash;&gt;-->
+		<!--<spring:constructor-arg value="${metrics.reporter.application}"/>&lt;!&ndash; app &ndash;&gt;-->
+		<!--</spring:bean>-->
+		<util:list id="scheduledReporters">
+			<!--<spring:ref bean="consoleReporter" />-->
+			<spring:ref bean="slf4jReporterWithDeltas" />
+			<spring:ref bean="kafkaReporter" />
+			<!--<spring:ref bean="csvReporterWithDeltas" />-->
+		</util:list>
+	</spring:beans>
+	
+	<metrics:config name="metricsConfig" metricRegistry-ref="metricRegistry" reporterInterval="5" doc:name="Metrics: Metric Connector Configuration">
+		<metrics:scheduled-reporters ref="scheduledReporters" />
+	</metrics:config>
+
+</mule>

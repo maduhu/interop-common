@@ -69,5 +69,10 @@
 
 	<!-- Mule Dependencies -->
 	<dependencies>
-    	</dependencies>
+		<dependency>
+			<groupId>com.l1p.interop</groupId>
+			<artifactId>interop-mule-connector-metrics</artifactId>
+			<version>1.0.20</version>
+		</dependency>
+    </dependencies>
 </project>
