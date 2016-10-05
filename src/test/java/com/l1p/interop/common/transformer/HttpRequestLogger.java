@@ -61,7 +61,7 @@ public class HttpRequestLogger extends AbstractMessageTransformer {
 		final String httpRemoteAddress = message.getInboundProperty("http.remote.address");
 
 		StringBuffer result = new StringBuffer( "Received " );
-		result.append( message.getInboundProperty("http.method") ).append( " request for path " ).append( message.getInboundProperty("http.request.path") );
+		result.append( message.getInboundProperty("http.method").toString() ).append( " request for path " ).append( message.getInboundProperty("http.request.path").toString() );
 
 		if ( httpRemoteAddress == null || httpRemoteAddress.trim().length() == 0 ) {
 			result.append( " from remote client address " ).append( muleRemoteClientAddress );
@@ -72,7 +72,7 @@ public class HttpRequestLogger extends AbstractMessageTransformer {
 		result.append( ", " ).append( ( containedReqId ? "using" : "assigning" ) ).append( setMessageID ? " messageID=" : " requestId=" ).append( requestId );
 
 		if ( logContentType )
-			result.append( ": content-type=" ).append( message.getInboundProperty("content-type") ).append( ": payload-class=" ).append( message.getPayload() != null ? message.getPayload().getClass() : "NULL" );
+			result.append( ": content-type=" ).append( message.getInboundProperty("content-type").toString() ).append( ": payload-class=" ).append( message.getPayload() != null ? message.getPayload().getClass() : "NULL" );
 
 		if ( logQueryParameters )
 			result.append( ": queryParams=" ).append( queryParams );
