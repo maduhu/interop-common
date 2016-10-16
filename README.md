@@ -1,5 +1,5 @@
-# interop-common
+# maven-common
 
-This is a common project for all interop projects such as interop-dfsp-gateway and interop-spsp-clientproxy. This contains common classes that are used by interop projects and properties. 
+This is a common project for all modusbox template projects such as jde-demo-salesforce and jde-demo-invoke-bsfn. This contains common classes that are used by standard mule projects and properties. 
 
-Referenced in the projects, specified by the release version 1.x.x, groupId = com.l1p.interop and artifactId = interop-common
+Referenced in the projects, specified by the release version 1.x.x, groupId = com.modusbox.common and artifactId = maven-common

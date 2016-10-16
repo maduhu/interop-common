@@ -1,6 +1,4 @@
-package com.l1p.interop;
-
-import com.l1p.interop.L1PErrorResponse;
+package com.modusbox.common;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -12,11 +10,13 @@ import org.mule.transformer.AbstractMessageTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.modusbox.common.ErrorResponse;
+
 /**
- * This class takes a mule exception and creates a L1PErrorResponse that is formatted as json string. 
+ * This class takes a mule exception and creates a ErrorResponse that is formatted as json string. 
  * Created by Bryan on 8/31/2016
  */
-public class L1PExceptionTransformer extends AbstractMessageTransformer {
+public class ExceptionTransformer extends AbstractMessageTransformer {
 
     private Logger log = LoggerFactory.getLogger(getClass());
 
@@ -39,7 +39,7 @@ public class L1PExceptionTransformer extends AbstractMessageTransformer {
         }
 
         muleMessage.addProperties(addProperty, PropertyScope.INVOCATION);
-        L1PErrorResponse errorResponse = new L1PErrorResponse( errorMessageId, errorMessage, t );
+        ErrorResponse errorResponse = new ErrorResponse( errorMessageId, errorMessage, t );
         
         return errorResponse.getJsonString();
     }

@@ -1,4 +1,4 @@
-package com.l1p.interop;
+package com.modusbox.common;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
