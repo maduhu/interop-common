@@ -1,8 +1,6 @@
-package com.modusbox.common;
+package com.l1p.interop;
 
 import org.junit.Test;
-
-import com.modusbox.common.JsonTransformer;
 
 import java.util.HashMap;
 import java.util.Map;

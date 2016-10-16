@@ -1,9 +1,6 @@
-package com.modusbox.common;
+package com.l1p.interop;
 
 import org.junit.Test;
-
-import com.modusbox.common.ErrorResponse;
-import com.modusbox.common.JsonTransformer;
 
 import java.util.Map;
 
@@ -11,11 +8,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Unit Test for ErrorResponse
+ * Unit Test for L1PErrorResponse
  *
  * Created by Bryan on 8/18/2016.
  */
-public class ErrorResponseTest {
+public class L1PErrorResponseTest {
 
     @Test
     /**
@@ -26,7 +23,7 @@ public class ErrorResponseTest {
         String message = "a message";
         String id = "an id";
 
-        ErrorResponse errorResponse = new ErrorResponse( id, message, null );
+        L1PErrorResponse errorResponse = new L1PErrorResponse( id, message, null );
         String errorResponseJson = errorResponse.toString();
 
         //convert output to map
@@ -44,19 +41,19 @@ public class ErrorResponseTest {
         Exception causeException = new RuntimeException( rootCauseExceptionMessage );
         Exception testException = new RuntimeException( exceptionMessage, causeException );
 
-        ErrorResponse errorResponse = new ErrorResponse( id, message, testException );
+        L1PErrorResponse errorResponse = new L1PErrorResponse( id, message, testException );
         String errorResponseJson = errorResponse.toString();
 
         //convert output to map
         Map<String,Object> header = JsonTransformer.stringToMap( errorResponseJson );
         validateErrorResponse( header, id, message, true );
 
-        Map<String,Object> debug = (Map<String,Object>)header.get( ErrorResponse.DEBUG_FIELD );
-        assertEquals( "Debug message did not contain expected value", exceptionMessage, debug.get( ErrorResponse.MESSAGE_FIELD ) );
-        assertTrue( "Debug object did not contain expected field " + ErrorResponse.CAUSE_FIELD, debug.containsKey( ErrorResponse.CAUSE_FIELD ) );
-        Map<String,Object> cause = (Map<String,Object>)debug.get( ErrorResponse.CAUSE_FIELD );
-        assertTrue( "Debug object contained a null value for field " + ErrorResponse.CAUSE_FIELD, cause != null );
-        assertEquals( "Cause message did not contain expected value", rootCauseExceptionMessage, cause.get( ErrorResponse.MESSAGE_FIELD ) );
+        Map<String,Object> debug = (Map<String,Object>)header.get( L1PErrorResponse.DEBUG_FIELD );
+        assertEquals( "Debug message did not contain expected value", exceptionMessage, debug.get( L1PErrorResponse.MESSAGE_FIELD ) );
+        assertTrue( "Debug object did not contain expected field " + L1PErrorResponse.CAUSE_FIELD, debug.containsKey( L1PErrorResponse.CAUSE_FIELD ) );
+        Map<String,Object> cause = (Map<String,Object>)debug.get( L1PErrorResponse.CAUSE_FIELD );
+        assertTrue( "Debug object contained a null value for field " + L1PErrorResponse.CAUSE_FIELD, cause != null );
+        assertEquals( "Cause message did not contain expected value", rootCauseExceptionMessage, cause.get( L1PErrorResponse.MESSAGE_FIELD ) );
 
     }
 
@@ -65,10 +62,10 @@ public class ErrorResponseTest {
 
         Map<String,Object> error = (Map<String,Object>)errorResponseHeader.get( "error" );
         assertTrue( "Error map was null", error != null );
-        assertEquals( "Header map did not contain correct data for " + ErrorResponse.MESSAGE_FIELD + " element", expectedMessage, error.get( ErrorResponse.MESSAGE_FIELD ) );
-        assertEquals( "Header map did not contain correct data for " + ErrorResponse.ID_FIELD + " element", expectedId, error.get( ErrorResponse.ID_FIELD ) );
+        assertEquals( "Header map did not contain correct data for " + L1PErrorResponse.MESSAGE_FIELD + " element", expectedMessage, error.get( L1PErrorResponse.MESSAGE_FIELD ) );
+        assertEquals( "Header map did not contain correct data for " + L1PErrorResponse.ID_FIELD + " element", expectedId, error.get( L1PErrorResponse.ID_FIELD ) );
 
-        Map<String, Object> debug = (Map<String, Object>)errorResponseHeader.get( ErrorResponse.DEBUG_FIELD );
+        Map<String, Object> debug = (Map<String, Object>)errorResponseHeader.get( L1PErrorResponse.DEBUG_FIELD );
         if ( shouldContainDebugInfo ) {
             assertTrue( "Response contained null debug information", debug != null );
             assertTrue( "Response contained empty debug information", debug.size() > 0 );

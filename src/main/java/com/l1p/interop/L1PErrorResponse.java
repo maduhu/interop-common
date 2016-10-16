@@ -1,4 +1,4 @@
-package com.modusbox.common;
+package com.l1p.interop;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Class to handle construction of standard error response for common projects.
+ * Class to handle construction of standard error response for the level 1 project.
  *
  * Created by Bryan on 8/17/2016.
  */
-public class ErrorResponse {
+public class L1PErrorResponse {
 
     public static final String ERROR_FIELD = "error";
     public static final String ID_FIELD = "id";
@@ -27,14 +27,14 @@ public class ErrorResponse {
     private final Map<String,Object> responseData;
 
     /**
-     * Constructs an instance of ErrorResponse.  If throwable is not null and includeDebugInfo is true
+     * Constructs an instance of L1PErrorResponse.  If throwable is not null and includeDebugInfo is true
      * then a debug section will be included in the response as well.
      *
      * @param id - Application defined error type, usually part of well defined list of error types
      * @param message - Error message suitable to be logged in application logs.
      * @param throwable - Instance of Throwable that will be included as debug information.
      */
-    public ErrorResponse( final String id, final String message, Throwable throwable ) {
+    public L1PErrorResponse( final String id, final String message, Throwable throwable ) {
         final Map<String, Object> errorMap = new HashMap<String, Object>();
 
         updateField( MESSAGE_FIELD, message, errorMap );
@@ -51,16 +51,14 @@ public class ErrorResponse {
     }
 
     /**
-	 * Recursively builds up a nested map structure representing an exception
-	 * hierarchy. The depth is limited to MAX_RECURSION_DEPTH levels to protect
-	 * against debug information creating a stack overflow.
-	 *
-	 * @param throwable
-	 *            - the top level Throwable
-	 * @param level
-	 *            - current recursion depth
-	 * @return Map representing the exception hierarchy
-	 */
+     * Recursively builds up a nested map structure representing an exception hierarchy.  The depth is
+     * limited to MAX_RECURSION_DEPTH levels to protect against debug information creating a
+     * stack overflow.
+     *
+     * @param throwable - the top level Throwable
+     * @param level - current recursion depth
+     * @return Map representing the exception hierarchy
+     */
     private Map<String,Object> parseCause( final Throwable throwable, final int level ) {
         Map<String, Object> result = new HashMap<String,Object>();
 
