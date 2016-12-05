@@ -2,6 +2,7 @@ package com.l1p.interop;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -42,7 +43,8 @@ public class JsonTransformer {
 		try {
 			return threadLocalObjectMapper.get().writeValueAsString(source);
 		} catch (IOException e) {
-			throw new RuntimeException("Failed to convert source Map to JSON: " + e.getMessage());
+			throw new JsonTransformerException("Failed to convert source Map to JSON: " + e.getMessage());
+			//throw new RuntimeException("Failed to convert source Map to JSON: " + e.getMessage());
 		}
 	}
 
@@ -56,12 +58,17 @@ public class JsonTransformer {
 	 */
 	public static Map<String, Object> stringToMap(final String jsonString) {
 
+		//Map<String, String> testMap = new HashMap();
+		//JSONObject jsonObj = new JSONObject (testMap);
+		
 		try {
 			return jsonString != null ? (Map<String, Object>) threadLocalObjectMapper.get()
-					.readValue(jsonString.toString(), new TypeReference<Map<String, Object>>() {
+					.readValue(jsonString, new TypeReference<Map<String, Object>>() {
 					}) : new HashMap<String, Object>();
 		} catch (IOException e) {
-			throw new RuntimeException("Failed to convert source String to Map<String,Object>: " + e.getMessage());
+			throw new JsonTransformerException("Failed to convert source String to Map<String,Object>: " + e.getMessage());
+			//throw new RuntimeException("Failed to convert source String to Map<String,Object>: " + e.getMessage());
 		}
+		
 	}
 }
