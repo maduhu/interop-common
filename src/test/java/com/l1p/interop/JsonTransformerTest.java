@@ -41,8 +41,9 @@ public class JsonTransformerTest {
             JsonTransformer.stringToMap( "<NotJSON/>" );
         } catch( NullPointerException e ) {
             fail( "Conversion of invalid data to map produced a NullPointerException" );
-        } catch( RuntimeException e ) {
+        } catch( JsonTransformerException e ) {
             assertTrue( "Conversion of invalid data to map produced a RuntimeException of an unexpected type: " + e.getMessage(), e.getMessage().contains( "Failed to convert source String" ) );
+            System.out.println("here");
         } catch( Exception e ) {
             fail( "Conversion of invalid data to map produced an unexpected exception: " + e.getClass().getName() );
         }
@@ -102,7 +103,7 @@ public class JsonTransformerTest {
             JsonTransformer.mapToString( badDataMap );
         } catch( NullPointerException e ) {
             fail( "Conversion of invalid map data to string produced a NullPointerException" );
-        } catch( RuntimeException e ) {
+        } catch( JsonTransformerException e ) {
             assertTrue( "Conversion of invalid map data to string produced a RuntimeException of an unexpected type: " + e.getMessage(), e.getMessage().contains( "Failed to convert source Map to JSON" ) );
         } catch( Exception e ) {
             fail( "Conversion of invalid map data to string produced an unexpected exception: " + e.getClass().getName() );
