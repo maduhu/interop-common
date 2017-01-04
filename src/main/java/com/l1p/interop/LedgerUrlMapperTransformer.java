@@ -19,11 +19,10 @@ import java.io.IOException;
 public class LedgerUrlMapperTransformer extends AbstractMessageTransformer {
   private static final Logger log = LoggerFactory.getLogger(LedgerUrlMapperTransformer.class);
 
-  private final LedgerUrlMapper ledgerUrlMapper;
+  private LedgerUrlMapper ledgerUrlMapper;
   private final ObjectMapper mapper = new ObjectMapper();
 
-  public LedgerUrlMapperTransformer(LedgerUrlMapper ledgerUrlMapper) {
-    this.ledgerUrlMapper = ledgerUrlMapper;
+  public LedgerUrlMapperTransformer() {
   }
 
   public Object transformMessage(MuleMessage message, String outputEncoding) throws TransformerException {
@@ -37,5 +36,13 @@ public class LedgerUrlMapperTransformer extends AbstractMessageTransformer {
       final Message msg = MessageFactory.createStaticMessage("Failed to map ledger urls");
       throw new TransformerException(msg);
     }
+  }
+
+  public LedgerUrlMapper getLedgerUrlMapper() {
+    return ledgerUrlMapper;
+  }
+
+  public void setLedgerUrlMapper(LedgerUrlMapper ledgerUrlMapper) {
+    this.ledgerUrlMapper = ledgerUrlMapper;
   }
 }
