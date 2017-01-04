@@ -16,13 +16,13 @@ import java.io.IOException;
 /**
  * Tranforms JSON representation of Transfer Object's DFSP Ledger specific urls to Ledger Adapter Specific Urls
  */
-public class LedgerUrlMapperComponent extends AbstractMessageTransformer {
-  private static final Logger log = LoggerFactory.getLogger(LedgerUrlMapperComponent.class);
+public class LedgerUrlMapperTransformer extends AbstractMessageTransformer {
+  private static final Logger log = LoggerFactory.getLogger(LedgerUrlMapperTransformer.class);
 
   private final LedgerUrlMapper ledgerUrlMapper;
   private final ObjectMapper mapper = new ObjectMapper();
 
-  public LedgerUrlMapperComponent(LedgerUrlMapper ledgerUrlMapper) {
+  public LedgerUrlMapperTransformer(LedgerUrlMapper ledgerUrlMapper) {
     this.ledgerUrlMapper = ledgerUrlMapper;
   }
 
