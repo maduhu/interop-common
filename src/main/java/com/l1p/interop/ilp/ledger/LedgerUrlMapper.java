@@ -22,14 +22,14 @@ public class LedgerUrlMapper {
   private final String actualLedgerReplacementUrl;
 
 
-  public LedgerUrlMapper(String ledgerAdapterUrlMappingRegex, String ledgerAdapterReplacementUrl, String actualLedgerUrlMappingRegex, String actualLedgerReplacementUrl) {
+  public LedgerUrlMapper(String actualLedgerUrlMappingRegex, String ledgerAdapterReplacementUrl, String ledgerAdapterUrlMappingRegex, String actualLedgerReplacementUrl) {
     this.ledgerAdapterUrlMappingRegex = ledgerAdapterUrlMappingRegex;
     this.ledgerAdapterReplacementUrl = ledgerAdapterReplacementUrl;
     this.actualLedgerUrlMappingRegex = actualLedgerUrlMappingRegex;
     this.actualLedgerReplacementUrl = actualLedgerReplacementUrl;
   }
 
-  public void mapUrlToIlpAdapterLedger(Transfer transfer) throws MalformedURLException {
+  public void mapUrlToLedgerAdapter(Transfer transfer) throws MalformedURLException {
     transfer.setId(transfer.getId().replaceFirst(ledgerAdapterUrlMappingRegex, ledgerAdapterReplacementUrl));
     transfer.setLedger(transfer.getLedger().replaceFirst(ledgerAdapterUrlMappingRegex, ledgerAdapterReplacementUrl));
 
@@ -43,11 +43,11 @@ public class LedgerUrlMapper {
   }
 
   public void mapUrlToLedgerAdapterUrl(final String[] fields, final Map<String, Object> map) {
-    mapUrls(fields, map, ledgerAdapterUrlMappingRegex, ledgerAdapterReplacementUrl);
+    mapUrls(fields, map, actualLedgerUrlMappingRegex, ledgerAdapterReplacementUrl);
   }
 
   public void mapUrlToActualLedgerUrl(final String[] fields, final Map<String, Object> map) {
-    mapUrls(fields, map, actualLedgerUrlMappingRegex, actualLedgerReplacementUrl);
+    mapUrls(fields, map, ledgerAdapterUrlMappingRegex, actualLedgerReplacementUrl);
   }
 
   private void mapUrls(final String[] fields, final Map<String, Object> targetMap, final String regex, final String replacementUrl) {
