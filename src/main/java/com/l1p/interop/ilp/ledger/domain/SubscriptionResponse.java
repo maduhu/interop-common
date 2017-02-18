@@ -2,11 +2,11 @@ package com.l1p.interop.ilp.ledger.domain;
 
 public class SubscriptionResponse {
 
-  private String id;
+  private int id;
   private String jsonrpc;
   private int result;
 
-  public SubscriptionResponse(String id, String jsonrpc, int size) {
+  public SubscriptionResponse(int id, String jsonrpc, int size) {
     this.id = id;
     this.jsonrpc = jsonrpc;
     this.result = size;
@@ -15,11 +15,11 @@ public class SubscriptionResponse {
   public SubscriptionResponse() {
   }
 
-  public String getId() {
+  public int getId() {
     return id;
   }
 
-  public void setId(String id) {
+  public void setId(int id) {
     this.id = id;
   }
 

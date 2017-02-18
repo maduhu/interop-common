@@ -2,16 +2,16 @@ package com.l1p.interop.ilp.ledger.domain;
 
 public class SubscriptionRequest {
 
-  private String id;
+  private int id;
   private String jsonrpc;
   private String method;
   private SubscriptionParams params;
 
-  public String getId() {
+  public int getId() {
     return id;
   }
 
-  public void setId(String id) {
+  public void setId(int id) {
     this.id = id;
   }
 
