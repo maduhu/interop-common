@@ -1,17 +1,13 @@
 package com.l1p.interop.ilp.ledger.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
 
+@JsonIgnoreProperties({"proposed_at"})
 public class Timeline {
-
-	@JsonIgnore
-	@JsonProperty(value = "proposed_at")
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-	private Date proposedAt;
 
 	@JsonProperty(value = "prepared_at")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
@@ -26,14 +22,6 @@ public class Timeline {
 	private Date rejectedAt;
 
 	public Timeline() {
-	}
-
-	public Date getProposedAt() {
-		return proposedAt;
-	}
-
-	public void setProposedAt(Date proposedAt) {
-		this.proposedAt = proposedAt;
 	}
 
 	public Date getPreparedAt() {
