@@ -10,12 +10,12 @@
 
   <artifactId>interop-common</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.25-SNAPSHOT</version>
+  <version>1.0.25</version>
   <name>Mule Common Module</name>
 
   <scm>
     <connection>scm:git:https://github.com/LevelOneProject/interop-common</connection>
-    <tag>HEAD</tag>
+    <tag>interop-common-1.0.25</tag>
   </scm>
 
   <properties>
