@@ -1,47 +1,50 @@
 package com.l1p.interop.ilp.ledger.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
 
+@JsonIgnoreProperties({"proposed_at"})
 public class Timeline {
-  @JsonProperty(value = "prepared_at")
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-  private Date preparedAt;
 
-  @JsonProperty(value = "executed_at")
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-  private Date executedAt;
+	@JsonProperty(value = "prepared_at")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+	private Date preparedAt;
 
-  @JsonProperty(value = "rejected_at")
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-  private Date rejectedAt;
+	@JsonProperty(value = "executed_at")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+	private Date executedAt;
 
-  public Timeline() {
-  }
+	@JsonProperty(value = "rejected_at")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+	private Date rejectedAt;
 
-  public Date getPreparedAt() {
-    return preparedAt;
-  }
+	public Timeline() {
+	}
 
-  public void setPreparedAt(Date preparedAt) {
-    this.preparedAt = preparedAt;
-  }
+	public Date getPreparedAt() {
+		return preparedAt;
+	}
 
-  public Date getExecutedAt() {
-    return executedAt;
-  }
+	public void setPreparedAt(Date preparedAt) {
+		this.preparedAt = preparedAt;
+	}
 
-  public void setExecutedAt(Date executedAt) {
-    this.executedAt = executedAt;
-  }
+	public Date getExecutedAt() {
+		return executedAt;
+	}
 
-  public Date getRejectedAt() {
-    return rejectedAt;
-  }
+	public void setExecutedAt(Date executedAt) {
+		this.executedAt = executedAt;
+	}
 
-  public void setRejectedAt(Date rejectedAt) {
-    this.rejectedAt = rejectedAt;
-  }
+	public Date getRejectedAt() {
+		return rejectedAt;
+	}
+
+	public void setRejectedAt(Date rejectedAt) {
+		this.rejectedAt = rejectedAt;
+	}
 }
