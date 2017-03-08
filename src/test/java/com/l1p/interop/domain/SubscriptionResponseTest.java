@@ -1,4 +1,4 @@
-package com.l1p.interop;
+package com.l1p.interop.domain;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
