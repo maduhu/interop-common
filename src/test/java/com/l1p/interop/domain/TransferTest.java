@@ -1,16 +1,17 @@
 package com.l1p.interop.domain;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import java.util.Date;
 
 import com.l1p.interop.ilp.ledger.domain.Credit;
 import com.l1p.interop.ilp.ledger.domain.Debit;
+import com.l1p.interop.ilp.ledger.domain.Timeline;
 import com.l1p.interop.ilp.ledger.domain.Transfer;
 
 public class TransferTest {
@@ -47,7 +48,7 @@ public class TransferTest {
 	@Test
 	public void testCredits() {
 		Transfer x = new Transfer();
-		List<Credit> credits = new ArrayList<Credit>();
+		List<Credit> credits = new ArrayList<Credit>();	
 		x.setCredits(credits);
 		assertEquals("additional info", x.getCredits().size(), 0);
 	}
@@ -79,5 +80,27 @@ public class TransferTest {
 		assertEquals("additional info", x.getRejectionReason(), reason);
 	}
 	
+	
+	@Test
+	public void testLedger() {
+		String reason = "Too much money";
+		Transfer x = new Transfer();
+		x.setLedger(reason);
+		assertEquals("additional info", x.getLedger(), reason);
+	}
+	
+	
+	@Test
+	public void testTimeline() {
+		String reason = "Too much money";
+		Transfer x = new Transfer();
+		Timeline tl = new Timeline();
+		tl.setExecutedAt(new Date());
+		tl.setPreparedAt(new Date());
+		tl.setRejectedAt(new Date());
+		
+		x.setTimeline(tl);
+		assertTrue("additional info", x.getTimeline() != null);
+	}
 	
 }
