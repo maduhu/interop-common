@@ -1,6 +1,6 @@
 # interop-common
 
-This is a common project package as a library for all interop projects such as interop-dfsp-gateway and interop-spsp-clientproxy. This contains common classes and common properties files that are used by interop projects and properties. 
+This is a common project package as a library for all interop projects such as interop-domain, interop-dfsp-gateway and interop-spsp-clientproxy. This contains common classes and common properties files that are used by interop projects and properties. 
 
 Referenced in the projects, specified by the release version 1.x.x, groupId = com.l1p.interop and artifactId = interop-common
 
@@ -17,44 +17,25 @@ Contents:
 
 Project is built using Maven and uses Circle for Continous Integration.
 
-(How do you run this code?)
-
-(Example for NPM-published services--
-
-Installation:
-
-1. Install [Node.js and npm](https://nodejs.org/en/)
-
-2. Configure your npm instance to use the LevelOneProject repository.
-
-    See [Docs/Artifactory/NPM Repos](https://github.com/LevelOneProject/Docs/blob/master/Artifactory/npm_repos.md) for detailed instructions.
-
-3. Install the `(package name)` package.
-
-        npm install (package name)
-
-Running the server locally:
-
-    npm start
-
---end example)
+This is released as a jar file (upon the tests succeeding) to artifactory from which the required versions are referenced and used by base level projects or the interop-domain project
 
 ## Configuration
 
-pom.xml and circle.yml can be found at interop-common repo
+[pom.xml](./pom.xml) and [circle.yml](./circle.yml) can be found in the repo
 
-(Explanation of important config parameters)
-
+The project contains configuration of the common HTTP connector and the host/port details. Also contains metrics properties, related classes and other common classes used across the interop services.
 
 ## API
 
-(If the API is short, summarize it here; otherwise, link a separate page with the API docs or explain how to build the API docs from the repo.)
+This repo does not contain an API.
 
 ## Logging
 
-Sever path to logs is: /opt/mule/mule-dfsp1/logs
+This project by itself doesn't generate any logs but when referenced, some of the classes do generate logs.
 
-(Explain important things about what gets logged or how to interpret the logs. Use subheaders if necessary.)
+Server path to logs is: <mule_home>/logs/*.log
+
+Currently the logs are operational and include information such as TraceID and other details related to the calls or transactions such as path, method used, header information and sender/receiver details.
 
 ## Tests
 
