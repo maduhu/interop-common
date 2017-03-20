@@ -32,6 +32,7 @@ public class L1PExceptionTransformer extends AbstractMessageTransformer {
         
         Map<String, Object> addProperty = new HashMap<String, Object>();
         addProperty.put("Content-Type", "application/json");
+        addProperty.put("http.status", ( muleMessage.getInboundProperty("http.status")!= null ? muleMessage.getInboundProperty("http.status") : 500 ) );
 
         Throwable t = null;
         if ( muleMessage.getExceptionPayload() != null ) {
