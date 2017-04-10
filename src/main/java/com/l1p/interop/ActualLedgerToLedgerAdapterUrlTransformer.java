@@ -32,7 +32,7 @@ public class ActualLedgerToLedgerAdapterUrlTransformer extends AbstractMessageTr
   public Object transformMessage(MuleMessage message, String outputEncoding) throws TransformerException {
     try {
       final String genericJson = (String) message.getPayload();
-      log.info("interopID:{}, Interop Object JSON: {}", message.getProperty(TRACE_ID, PropertyScope.SESSION), genericJson);
+      log.info("TraceID:{}, Interop Object JSON: {}", message.getProperty(TRACE_ID, PropertyScope.SESSION), genericJson);
       Map<String, Object> interopGenericMap = mapper.readValue(genericJson, new TypeReference<Map<String, Object>>() { });
       ledgerUrlMapper.mapUrlToLedgerAdapterUrl(urlFields, interopGenericMap);
       return mapper.writeValueAsString(interopGenericMap);
