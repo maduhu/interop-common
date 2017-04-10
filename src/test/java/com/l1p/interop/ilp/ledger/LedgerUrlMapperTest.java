@@ -1,18 +1,23 @@
 package com.l1p.interop.ilp.ledger;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.l1p.interop.ilp.ledger.domain.SubscriptionRequest;
-import com.l1p.interop.ilp.ledger.domain.Transfer;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.junit.Test;
 import org.springframework.util.Assert;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.l1p.interop.ilp.ledger.domain.Credit;
+import com.l1p.interop.ilp.ledger.domain.Debit;
+import com.l1p.interop.ilp.ledger.domain.SubscriptionRequest;
+import com.l1p.interop.ilp.ledger.domain.Transfer;
 
 public class LedgerUrlMapperTest {
 
@@ -134,6 +139,39 @@ public class LedgerUrlMapperTest {
         ObjectMapper mapper = new ObjectMapper();
         SubscriptionRequest readValue = mapper.readValue(subscriptionRequest, SubscriptionRequest.class);
         assertEquals("*", readValue.getParams().getEventType());
+    }
+    
+    
+    @Test
+    public void testMapUrlToLedgerAdapter() throws MalformedURLException {
+    	final LedgerUrlMapper ledgerUrlMapper = new LedgerUrlMapper(".*/ledger", "http://ec2-35-163-231-111.us-west-2.compute.amazonaws.com:8081/ilp/ledger/v1", ".*/v1", "http://ec2-35-163-231-111.us-west-2.compute.amazonaws.com:8088/ledger");
+        
+    	List<Debit> debits = new ArrayList<Debit>();
+    	List<Credit> credits = new ArrayList<Credit>();
+    	
+    	Debit debit = null;
+    	Credit credit = null;
+    	
+    	debit = new Debit();
+    	debit.setAccount("Test1");
+    	debit.setAmount("100.01");
+    	debit.setAuthorized(true);
+
+    	debits.add(debit);
+    	
+    	credit = new Credit();
+    	credit.setAccount("CreditAccount");
+    	credit.setAmount("100.01");
+    	
+    	credits.add(credit);
+    	
+        Transfer xfer = new Transfer();
+        xfer.setId("id");
+        xfer.setLedger("ledger");
+        xfer.setCredits(credits);
+        xfer.setDebits(debits);
+        
+        ledgerUrlMapper.mapUrlToLedgerAdapter(xfer);
     }
 
 }
