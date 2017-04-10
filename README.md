@@ -35,7 +35,7 @@ This project by itself doesn't generate any logs but when referenced, some of th
 
 Server path to logs is: <mule_home>/logs/*.log
 
-Currently the logs are operational and include information such as TraceID and other details related to the calls or transactions such as path, method used, header information and sender/receiver details.
+Currently the logs are operational and include information such as TraceID and other details related to the calls or transactions such as path, method used, header information and payer/payee details.
 
 ## Tests
 
