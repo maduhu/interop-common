@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public class ActualLedgerToLedgerAdapterUrlTransformer extends AbstractMessageTransformer {
   private static final Logger log = LoggerFactory.getLogger(ActualLedgerToLedgerAdapterUrlTransformer.class);
-  public static final String TRACE_ID = "traceID";
+  public static final String TRACE_ID = "TraceID";
 
   private LedgerUrlMapper ledgerUrlMapper;
   protected final ObjectMapper mapper = new ObjectMapper();
