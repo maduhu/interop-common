@@ -40,19 +40,19 @@ public class L1PExceptionTransformerTest extends SimpleCallableJavaComponentTest
 		MuleEvent event = getTestEvent("payload", muleContext);
 		MuleMessage muleMessage = event.getMessage();
         muleMessage.setProperty("id", "some name", PropertyScope.SESSION);
-        String interopID = UUID.randomUUID().toString();
+        String l1pTraceId = UUID.randomUUID().toString();
         final String messageID = "errorMsgId-123";
         
         // setup Mule message properties for test
         muleMessage.setProperty("errorMessageId", messageID, PropertyScope.SESSION);
-        muleMessage.setProperty("interopID", interopID, PropertyScope.SESSION);
+        muleMessage.setProperty("L1p-Trace-Id", l1pTraceId, PropertyScope.SESSION);
         
         muleMessage.setExceptionPayload( createExceptionMessagePayload() );
         
         L1PExceptionTransformer transformer = new L1PExceptionTransformer();
         
         String response = (String) transformer.transformMessage(muleMessage, "UTF-8");
-        System.out.println("WithInteropIdPresent:" + response);
+        System.out.println("WithL1p-Trace-IdPresent:" + response);
         
         JSONObject json = new JSONObject(response);
         JSONObject body = json.getJSONObject("error");
@@ -69,7 +69,7 @@ public class L1PExceptionTransformerTest extends SimpleCallableJavaComponentTest
 	public void testMessageWithInteropIDMissing() throws Exception {
 		
 		final String messageID = "errorMsgId-456";
-		final String traceID="traceId-123";
+		final String l1pTraceId="traceId-123";
 		
 		MuleEvent event = getTestEvent("payload", muleContext);
 		MuleMessage muleMessage = event.getMessage();
@@ -77,13 +77,13 @@ public class L1PExceptionTransformerTest extends SimpleCallableJavaComponentTest
         
         // setup Mule message properties for test
         muleMessage.setProperty("errorMessageId", messageID, PropertyScope.SESSION);
-        muleMessage.setProperty("traceID", traceID, PropertyScope.SESSION);
+        muleMessage.setProperty("L1p-Trace-Id", l1pTraceId, PropertyScope.SESSION);
         muleMessage.setExceptionPayload( createExceptionMessagePayload() );
         
         L1PExceptionTransformer transformer = new L1PExceptionTransformer();
         
         String response = (String) transformer.transformMessage(muleMessage, "UTF-8");
-        System.out.println("WithTraceIDPresent:" + response);
+        System.out.println("WithL1p-Trace-IdPresent:" + response);
         
         JSONObject json = new JSONObject(response);
         JSONObject body = json.getJSONObject("error");
@@ -91,7 +91,7 @@ public class L1PExceptionTransformerTest extends SimpleCallableJavaComponentTest
         String returnParsedMessageID = (String) body.get("id");
         String message = (String) body.get("message");
         
-        String traceIdTestMessage = "traceID="+traceID;
+        String traceIdTestMessage = "L1p-Trace-Id="+l1pTraceId;
         
         assertEquals("test for ID", returnParsedMessageID, messageID);
         assertTrue("message body contains ", message.indexOf(traceIdTestMessage)>-1);
