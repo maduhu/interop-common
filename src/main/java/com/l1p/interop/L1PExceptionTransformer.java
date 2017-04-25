@@ -23,9 +23,9 @@ public class L1PExceptionTransformer extends AbstractMessageTransformer {
     @Override
     public synchronized Object transformMessage(MuleMessage muleMessage, String outputEncoding) throws TransformerException {
         final String errorMessageId = muleMessage.getProperty( "errorMessageId", PropertyScope.SESSION );
-        final String traceID = (muleMessage.getProperty( "L1p-Trace-Id", PropertyScope.SESSION ) != null ? muleMessage.getProperty( "L1p-Trace-Id", PropertyScope.SESSION ).toString() : muleMessage.getProperty( "TraceID", PropertyScope.SESSION ).toString());    
+        final String l1pTraceId = (muleMessage.getProperty( "L1p-Trace-Id", PropertyScope.SESSION ) != null ? muleMessage.getProperty( "L1p-Trace-Id", PropertyScope.SESSION ).toString() : muleMessage.getProperty( "TraceID", PropertyScope.SESSION ).toString());    
         final String rootExceptionCause = muleMessage.getExceptionPayload().getRootException().getMessage();
-        final String errorMessage = "Failed to process request for L1p-Trace-Id=" + traceID + ": " + rootExceptionCause;
+        final String errorMessage = "Failed to process request for L1p-Trace-Id=" + l1pTraceId + ": " + rootExceptionCause;
         
         log.warn(errorMessageId + ": " + rootExceptionCause);
         log.warn(errorMessage);
