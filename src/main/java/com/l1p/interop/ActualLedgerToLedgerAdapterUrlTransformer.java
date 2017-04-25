@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public class ActualLedgerToLedgerAdapterUrlTransformer extends AbstractMessageTransformer {
   private static final Logger log = LoggerFactory.getLogger(ActualLedgerToLedgerAdapterUrlTransformer.class);
-  public static final String TRACE_ID = "TraceID";
+  public static final String TRACE_ID = "L1p-Trace-Id";
 
   private LedgerUrlMapper ledgerUrlMapper;
   protected final ObjectMapper mapper = new ObjectMapper();
@@ -32,7 +32,7 @@ public class ActualLedgerToLedgerAdapterUrlTransformer extends AbstractMessageTr
   public Object transformMessage(MuleMessage message, String outputEncoding) throws TransformerException {
     try {
       final String genericJson = (String) message.getPayload();
-      log.info("TraceID:{}, Interop Object JSON: {}", message.getProperty(TRACE_ID, PropertyScope.SESSION), genericJson);
+      log.info("L1p-Trace-Id:{}, Interop Object JSON: {}", message.getProperty(TRACE_ID, PropertyScope.SESSION), genericJson);
       Map<String, Object> interopGenericMap = mapper.readValue(genericJson, new TypeReference<Map<String, Object>>() { });
       ledgerUrlMapper.mapUrlToLedgerAdapterUrl(urlFields, interopGenericMap);
       return mapper.writeValueAsString(interopGenericMap);
