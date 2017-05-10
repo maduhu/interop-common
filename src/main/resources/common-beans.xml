@@ -12,7 +12,7 @@
     <!-- note that both sfdc and salesforce exist here for legacy reasons -->
 
     <!-- Level 0: Enable environmental overrides -->
-    <context:property-placeholder location="classpath:/opt/mule/conf/MuleEnvironment-override.properties,mq-override.properties,db-override.properties,ftp-override.properties,sfdc-override.properties,salesforce-override.properties,routing-override.properties,file-override.properties,email-override.properties,db-override.properties" order="0" ignore-unresolvable="true" ignore-resource-not-found="true" />
+    <context:property-placeholder location="classpath:MuleEnvironment-override.properties,mq-override.properties,db-override.properties,ftp-override.properties,sfdc-override.properties,salesforce-override.properties,routing-override.properties,file-override.properties,email-override.properties,db-override.properties" order="0" ignore-unresolvable="true" ignore-resource-not-found="true" />
 
     <!-- Level 1: skipped for now -->
 

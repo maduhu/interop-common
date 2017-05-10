@@ -18,10 +18,6 @@
     <tag>HEAD</tag>
   </scm>
 
-  <properties>
-  <mule.version>3.8.0</mule.version>
-    </properties>
-
   <build>
     <plugins>
       <plugin>
