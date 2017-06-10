@@ -9,7 +9,7 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-current.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-current.xsd">
 
-    <context:property-placeholder location="file:/opt/mule/mule-l1p.properties" order="0" ignore-unresolvable="true" ignore-resource-not-found="true" />
+    <context:property-placeholder location="file:/opt/mule/conf/mule-l1p.properties" order="0" ignore-unresolvable="true" ignore-resource-not-found="true" />
 
     <!-- Level 0: Enable environmental overrides -->
     <context:property-placeholder location="classpath:MuleEnvironment-override.properties,mq-override.properties,db-override.properties,ftp-override.properties,sfdc-override.properties,salesforce-override.properties,routing-override.properties,file-override.properties,email-override.properties,db-override.properties" order="1" ignore-unresolvable="true" ignore-resource-not-found="true" />
