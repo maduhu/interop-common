@@ -10,7 +10,7 @@
 
   <artifactId>interop-common</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.32-SNAPSHOT</version>
+  <version>1.0.31</version>
   <name>Mule Common Module</name>
 
   <scm>
