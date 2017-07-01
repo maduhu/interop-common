@@ -7,8 +7,8 @@
       xmlns:spring="http://www.springframework.org/schema/beans"
       xmlns:json="http://www.mulesoft.org/schema/mule/json"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="
-http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-current.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+      xsi:schemaLocation="http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
 http://www.mulesoft.org/schema/mule/apikit http://www.mulesoft.org/schema/mule/apikit/current/mule-apikit.xsd
@@ -21,7 +21,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <!-- Setting session variable L1p-Trace-Id to either L1p-Trace-Id header coming in if it exists or a generated UUID -->
     <sub-flow name="check-and-set-L1p-Trace-Id">
         <choice doc:name="Choice">
-            <when expression="#[ ( message.inboundProperties.'L1p-Trace-Id' != null ) || message.inboundProperties.'http.request.path'.toString().equals(&quot;/spsp/backend/v1/health&quot;) ]">
+            <when expression="#[ ( message.inboundProperties.'L1p-Trace-Id' != null ) || message.inboundProperties.'http.request.path'.toString().contains(&quot;/health&quot;) ]">
                 <set-session-variable variableName="L1p-Trace-Id" value="#[ message.inboundProperties.'L1p-Trace-Id' ]" doc:name="set-L1p-Trace-Id"/>
                 <logger message="Received request with L1p-Trace-Id=#[sessionVars.'L1p-Trace-Id'] at path=#[message.inboundProperties.'http.request.path'], method=#[message.inboundProperties.'http.method'], Content-Type=#[message.inboundProperties.'Content-Type']" level="INFO" category="com.l1p.interop.common" doc:name="Logger"/>
             </when>
