@@ -2,8 +2,6 @@ package com.l1p.interop.ilp.ledger.domain;
 
 public class Message {
 	
-	private String id;
-	private String ilp;
 	private String ledger;
 	private String from;
 	private String to;
@@ -39,33 +37,6 @@ public class Message {
 
 	public void setData(Object data) {
 		this.data = data;
-	}
-	/**
-	 * @return the id
-	 */
-	public String getId() {
-		return id;
-	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	/**
-	 * @return the ilp
-	 */
-	public String getIlp() {
-		return ilp;
-	}
-
-	/**
-	 * @param ilp the ilp to set
-	 */
-	public void setIlp(String ilp) {
-		this.ilp = ilp;
 	}
 
 }
